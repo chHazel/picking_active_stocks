@@ -1,5 +1,5 @@
 import db
-import requests
+import requests, os
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
 import schedule
