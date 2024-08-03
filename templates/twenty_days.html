@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>most active stocks within twenty days</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        
+        th, td {
+            text-align: center;
+            border: 1px solid black;        
+        }
+
+        table {
+            border: 1px solid black;      
+            border-collapse: collapse;  
+            width: 30%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>The most active stocks in 20 days</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in post %}
+            <tr>
+                {% for count in stock %}
+                <td>{{count}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

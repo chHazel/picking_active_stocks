@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Document</title>
+    <style>
+        h1 {
+            margin: 0
+        }
+
+        .title{
+            display: flex;
+            margin-left: 580px;
+            margin-top: 3%;
+        }
+
+        .link{
+            margin-left: 380px;
+            margin-top: 20px;
+        }
+
+        .content{
+            margin-left: 450px;
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class = "title">
+        <h1>Welcome</h1>
+        <a class = "link" href = "https://www.tradingview.com/markets/stocks-usa/market-movers-active/">website link</a>
+    </div>
+    <div class = "content">
+        <a href="{{url_for('display')}}">
+            <h4>View today's most active stocks</h4>
+        </a>
+        <a href="{{url_for('display_five_days')}}">
+            <h4>View the most active stocks in 5 days</h4>
+        </a>
+        <a href="{{url_for('display_ten_days')}}">
+            <h4>View the most active stocks in 10 days</h4>
+        </a>
+        <a href="{{url_for('display_twenty_days')}}">
+            <h4>View the most active stocks in 20 days</h4>
+        </a>
+    </div>
+</body>
+
+</html>
