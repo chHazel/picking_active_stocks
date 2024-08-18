@@ -3,7 +3,7 @@ import datetime
 
 def connection():
     conn = psycopg2.connect(
-    database = "stock_table", 
+    database = "active_stocks", 
     user= "apple", 
     password= "123456",
     host= "localhost",
@@ -14,12 +14,13 @@ def create_table():
     conn = connection()
 
     cur = conn.cursor()
+    cur.execute("DROP TABLE active_stocks;")
     cur.execute(""" 
-                CREATE TABLE IF NOT EXISTS stock_table(
+                CREATE TABLE IF NOT EXISTS active_stocks(
                 symbol VARCHAR(10), 
-                change VARCHAR(10), 
-                REL_VOLUMN VARCHAR(10), 
-                P_E VARCHAR(10), 
+                change FLOAT, 
+                REL_VOLUMN FLOAT, 
+                pe_ratio FLOAT, 
                 date DATE NOT NULL,
                 UNIQUE(symbol, date)
                 );""")
@@ -28,16 +29,16 @@ def create_table():
     cur.close()
     conn.close()
 
-def insert_data(symbol, change, rel_volumn, p_e):
+def insert_data(symbol, change, rel_volumn, pe_ratio):
     conn = connection()
 
     cur = conn.cursor()
 
     cur.execute(""" 
-        INSERT INTO stock_table (symbol, change, rel_volumn, p_e, date)
+        INSERT INTO active_stocks (symbol, change, rel_volumn, pe_ratio, date)
         VALUES (%s, %s, %s, %s, CURRENT_DATE)
         ON CONFLICT(symbol, date)
-        DO NOTHING;""", (symbol, change, rel_volumn, p_e))
+        DO NOTHING;""", (symbol, change, rel_volumn, pe_ratio))
     conn.commit()
     cur.close()
     conn.close()
@@ -46,7 +47,7 @@ def fetch_today_data():
     conn = connection()
 
     cur = conn.cursor()
-    cur.execute("""SELECT * FROM stock_table
+    cur.execute("""SELECT * FROM active_stocks
                 WHERE date = CURRENT_DATE""")
     rows = cur.fetchall()
     
@@ -56,7 +57,7 @@ def fetch_five_days():
     conn = connection()
     cur = conn.cursor()
     cur.execute("""SELECT symbol, COUNT(*) AS count
-                FROM stock_table
+                FROM active_stocks
                 WHERE date >= CURRENT_DATE - INTERVAL '5 days'
                 GROUP BY symbol
                 ORDER BY count DESC
@@ -69,7 +70,7 @@ def fetch_ten_days():
     conn = connection()
     cur = conn.cursor()
     cur.execute("""SELECT symbol, COUNT(*) AS count
-                FROM stock_table
+                FROM active_stocks
                 WHERE date >= CURRENT_DATE - INTERVAL '10 days'
                 GROUP BY symbol
                 ORDER BY count DESC
@@ -82,7 +83,7 @@ def fetch_twenty_days():
     conn = connection()
     cur = conn.cursor()
     cur.execute("""SELECT symbol, COUNT(*) AS count
-                FROM stock_table
+                FROM active_stocks
                 WHERE date >= CURRENT_DATE - INTERVAL '20 days'
                 GROUP BY symbol
                 ORDER BY count DESC

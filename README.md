@@ -4,5 +4,13 @@
 3. 用 Flask框架开发这个应用,开个一个页面用来展示每天抓取的这些前 20 名股票的上面提到的几个数据。
 4. 开发一个页面统计过去一段时间内，上榜的股票的出现次数排名。比如：过去五天/十天/20天 出现次数最高前 20 只的股票
 
-sudo lsof -i :5432
-sudo pkill -u postgres
+should install flask, psycopg2-binary, and use the postSQL as database
+
+type the instruction in the terminal:
+    export FLASK_APP=main
+    export FLASK_ENV=development
+    flask run
+
+if cannot connect to postSQL on MAC, try to type the following code in the terminal:
+    sudo lsof -i :5432
+    sudo pkill -u postgres

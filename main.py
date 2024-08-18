@@ -1,8 +1,7 @@
 import db
-import requests, os
+import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
-import schedule
 
 
 app = Flask(__name__)
@@ -48,19 +47,26 @@ def fetch_stock():
             colon = stock_name.index(":")
             # get the name of the stock
             stock_name = stock_name[colon + 1:]
-
             if num > 20:
                 break
 
             td_tags = tr.find_all('td')
-            change = td_tags[3].text
-            rel_volumn = td_tags[5].text
-            p_e = td_tags[7].text
+            change = td_tags[3].text 
+            change = change[:-1]
+            change = change.replace('−', '-')
+            change=float(change)
 
-            db.insert_data(stock_name, change, rel_volumn, p_e)
+            rel_volumn = float(td_tags[5].text)
+            
+            pe_ratio = td_tags[7].text
+            pe_ratio = pe_ratio.replace('−', '-')
+            if len(pe_ratio) > 1:
+                pe_ratio = float(pe_ratio)
+            else:
+                pe_ratio = None         
+
+            db.insert_data(stock_name, change, rel_volumn, pe_ratio)
             num += 1
         
         post = db.fetch_today_data()
         return post
-    
-schedule.every().day.at("00:00").do(fetch_stock)
